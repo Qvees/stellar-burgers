@@ -57,17 +57,17 @@ export const fetchWithRefresh = async <T>(
   }
 };
 
-type TIngredientsResponse = TServerResponse<{
+export type TIngredientsResponse = TServerResponse<{
   data: TIngredient[];
 }>;
 
-type TFeedsResponse = TServerResponse<{
+export type TFeedsResponse = TServerResponse<{
   orders: TOrder[];
   total: number;
   totalToday: number;
 }>;
 
-type TOrdersResponse = TServerResponse<{
+export type TOrdersResponse = TServerResponse<{
   data: TOrder[];
 }>;
 
@@ -137,7 +137,7 @@ export type TRegisterData = {
   password: string;
 };
 
-type TAuthResponse = TServerResponse<{
+export type TAuthResponse = TServerResponse<{
   refreshToken: string;
   accessToken: string;
   user: TUser;
@@ -153,7 +153,11 @@ export const registerUserApi = (data: TRegisterData) =>
   })
     .then((res) => checkResponse<TAuthResponse>(res))
     .then((data) => {
-      if (data?.success) return data;
+      if (data?.success) {
+        setCookie('accessToken', data.accessToken); //дописал получение токена в кукки при регистарции
+        localStorage.setItem('refreshToken', data.refreshToken); //дописал добавление рефрештокена в локалсторедж
+        return data;
+      }
       return Promise.reject(data);
     });
 
@@ -172,7 +176,11 @@ export const loginUserApi = (data: TLoginData) =>
   })
     .then((res) => checkResponse<TAuthResponse>(res))
     .then((data) => {
-      if (data?.success) return data;
+      if (data?.success) {
+        setCookie('accessToken', data.accessToken); //дописал получение токена в кукки при входе в аккаунт
+        localStorage.setItem('refreshToken', data.refreshToken); //дописал добавление рефрештокена в локалсторедж
+        return data;
+      }
       return Promise.reject(data);
     });
 
