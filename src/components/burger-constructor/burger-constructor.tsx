@@ -23,7 +23,7 @@ export const BurgerConstructor: FC = () => {
   );
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!constructorItems.ingredients.length || orderRequest) return;
     if (!isLoginUser) {
       navigate('/login');
       return;
