@@ -1,7 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { RootState, useDispatch, useSelector } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import {
   clearConstructor,
   getConstructorItems,
@@ -13,13 +13,13 @@ import { closeModal, doOrder } from '../../services/OrderReducer/OrderReducer';
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const constructorItems = useSelector(getConstructorItems);
-  const isLoginUser = useSelector((state) => state.auth.isLoginUser);
+  const isLoginUser = useSelector((state) => state.auth.user);
   const order = useSelector((state) => state.orders.orderData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [orderRequest, setOrderRequest] = useState(false);
   const orderModalData = useSelector(
-    (state: RootState) => state.orders.userNewOrder?.order || null
+    (state) => state.orders.userNewOrder?.order || null
   );
 
   const onOrderClick = () => {

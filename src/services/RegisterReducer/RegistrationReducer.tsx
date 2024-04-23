@@ -136,6 +136,7 @@ const authSlice = createSlice({
       .addCase(logOutUser.fulfilled, (state) => {
         state.userData = null;
         state.isLoginUser = false;
+        state.user = null;
       })
       .addCase(logOutUser.rejected, (state) => {
         state.isLoading = false;
@@ -172,7 +173,7 @@ const authSlice = createSlice({
       });
   },
   selectors: {
-    getUserData: (state) => state.userData?.user,
+    getUserData: (state) => state.user,
     getAuthChecked: (state) => state.isAuthChecked
   }
 });

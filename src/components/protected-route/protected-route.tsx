@@ -21,10 +21,6 @@ export const ProtectedRoute = ({
   const location = useLocation();
   const [wasOnForgotPassword, setWasOnForgotPassword] = useState(false);
 
-  // Проверяем, был ли пользователь на странице forgot-password перед переходом на reset-password
-  const fromForgotPassword =
-    location.state && location.state.from.pathname === '/forgot-password';
-
   if (!isAuthChecked) {
     return <Preloader />;
   }
@@ -36,22 +32,20 @@ export const ProtectedRoute = ({
   }
 
   if (!onlyUnAuth && !user) {
-    // Если пользователь не был на странице forgot-password, перенаправляем на эту страницу
-    if (location.pathname === '/reset-password' && !fromForgotPassword) {
-      setWasOnForgotPassword(true);
-      return <Navigate to='/forgot-password' />;
-    }
+    // для  аутентифицированных, но мы не аутентифицированы
     return <Navigate to='/login' state={{ from: location }} />;
   }
 
-  // if (onlyUnAuth && !user) {
-  //   return <Navigate to='/reset-password' state={{ from: location }} />;
-  // }
-
-  // // if (onlyUnAuth && !user) {
-  // //   // для неаутентифицированных и не пользователей
-  // //   return <Navigate to='/profile' />;
-  // // }
+  // Если пользователь заходит на страницу reset-password, проверяем, был ли он уже на странице forgot-password
+  if (onlyUnAuth && !user && location.pathname === '/reset-password') {
+    if (!wasOnForgotPassword) {
+      // Если пользователь не был на странице forgot-password, перенаправляем его на нее
+      return <Navigate to='/forgot-password' />;
+    } else {
+      // Если пользователь был на странице forgot-password, разрешаем переход на reset-password
+      return component;
+    }
+  }
 
   return component;
 };

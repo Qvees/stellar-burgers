@@ -18,11 +18,7 @@ import styles from './app.module.css';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
-import {
-  fetchAllOrders,
-  getUserOrder
-} from '../../services/OrderReducer/OrderReducer';
-import { checkUserAuth, fetchWithToken } from '../../services/auth/actions';
+import { checkUserAuth } from '../../services/auth/actions';
 
 const App = () => {
   const location = useLocation();
@@ -41,15 +37,6 @@ const App = () => {
   const handleModalClose = () => {
     navigate(-1);
   };
-
-  // useEffect(() => {
-  //   const refreshToken = localStorage.getItem('token');
-  //   if (refreshToken) {
-  //     dispatch(getUserThunk({ token }));
-  //   } else {
-  //     dispatch(init());
-  //   }
-  // }, []);
 
   return (
     <div className={styles.app}>
@@ -100,7 +87,7 @@ const App = () => {
             element={
               <OnlyAuth
                 component={
-                  <Modal title='номер заказа' onClose={handleModalClose}>
+                  <Modal title='Номер заказа' onClose={handleModalClose}>
                     <OrderInfo />
                   </Modal>
                 }
