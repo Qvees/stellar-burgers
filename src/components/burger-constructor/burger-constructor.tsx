@@ -1,25 +1,20 @@
-import { FC, useMemo, useEffect, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { RootState, useDispatch, useSelector } from '../../services/store';
 import {
+  clearConstructor,
   getConstructorItems,
-  getIngredients
-} from '../Reducers/BurgerReducer/BurgerReducer';
-import { Navigate, useNavigate } from 'react-router-dom';
-import {
-  closeModal,
-  doOrder
-} from '../../components/Reducers/OrderReducer/OrderReducer';
-import { allowedNodeEnvironmentFlags } from 'process';
-import { Modal } from '../modal';
-import { CloseIcon } from '@zlden/react-developer-burger-ui-components';
+  removeIngredient
+} from '../../services/BurgerReducer/BurgerReducer';
+import { useNavigate } from 'react-router-dom';
+import { closeModal, doOrder } from '../../services/OrderReducer/OrderReducer';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const constructorItems = useSelector(getConstructorItems);
-  const isLoginUser = useSelector((state: RootState) => state.auth.isLoginUser);
-  const order = useSelector((state: RootState) => state.orders.orderData);
+  const isLoginUser = useSelector((state) => state.auth.isLoginUser);
+  const order = useSelector((state) => state.orders.orderData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [orderRequest, setOrderRequest] = useState(false);
@@ -36,7 +31,7 @@ export const BurgerConstructor: FC = () => {
     const order: string[] = [
       constructorItems.bun!._id,
       ...constructorItems.ingredients.map(
-        (ingredient: { _id: any }) => ingredient._id
+        (ingredient: { _id: string }) => ingredient._id
       ),
       constructorItems.bun!._id
     ];
@@ -46,7 +41,8 @@ export const BurgerConstructor: FC = () => {
 
   const closeOrderModal = () => {
     setOrderRequest(false);
-    closeModal; // не закрывается модальное окно с информацией о заказе
+    dispatch(clearConstructor());
+    dispatch(closeModal());
   };
 
   const price = useMemo(

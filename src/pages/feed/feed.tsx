@@ -8,11 +8,14 @@ import { useDispatch } from '../../services/store';
 import {
   fetchAllOrders,
   getFeed
-} from '../../components/Reducers/OrderReducer/OrderReducer';
+} from '../../services/OrderReducer/OrderReducer';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchAllOrders());
+  }, []);
   const orders: TOrder[] = useSelector(
     (state: RootState) => state.orders.ordersData?.orders || []
   );

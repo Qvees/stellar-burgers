@@ -9,8 +9,8 @@ import {
   registerUserApi,
   resetPasswordApi,
   updateUserApi
-} from '../../../utils/burger-api';
-import { deleteCookie, getCookie } from '../../../utils/cookie';
+} from '../../utils/burger-api';
+import { deleteCookie, getCookie } from '../../utils/cookie';
 import { TUser } from '@utils-types';
 
 export interface UserData {

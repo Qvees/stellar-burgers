@@ -1,13 +1,11 @@
 import { useSelector } from '../../services/store';
-import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import {
   getAuthChecked,
   getUserData
-} from '../Reducers/RegisterReducer/RegistrationReducer';
-import { RootState } from '../../services/store';
-import { deleteCookie, getCookie } from '../../utils/cookie';
-import { useEffect } from 'react';
+} from '../../services/RegisterReducer/RegistrationReducer';
 import { Preloader } from '../ui/preloader';
+import { useState } from 'react';
 
 type TProtectedRouteProps = {
   onlyUnAuth?: boolean;
@@ -21,6 +19,11 @@ export const ProtectedRoute = ({
   const isAuthChecked = useSelector(getAuthChecked);
   const user = useSelector(getUserData);
   const location = useLocation();
+  const [wasOnForgotPassword, setWasOnForgotPassword] = useState(false);
+
+  // Проверяем, был ли пользователь на странице forgot-password перед переходом на reset-password
+  const fromForgotPassword =
+    location.state && location.state.from.pathname === '/forgot-password';
 
   if (!isAuthChecked) {
     return <Preloader />;
@@ -33,7 +36,11 @@ export const ProtectedRoute = ({
   }
 
   if (!onlyUnAuth && !user) {
-    // для  аутентифицированных, но мы не аутентифицированы
+    // Если пользователь не был на странице forgot-password, перенаправляем на эту страницу
+    if (location.pathname === '/reset-password' && !fromForgotPassword) {
+      setWasOnForgotPassword(true);
+      return <Navigate to='/forgot-password' />;
+    }
     return <Navigate to='/login' state={{ from: location }} />;
   }
 

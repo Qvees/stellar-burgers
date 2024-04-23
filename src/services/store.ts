@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import burgerReducer from '../components/Reducers/BurgerReducer/BurgerReducer';
-import authReducer from '../components/Reducers/RegisterReducer/RegistrationReducer';
-import ordersReducer from '../components/Reducers/OrderReducer/OrderReducer';
+import burgerReducer from './BurgerReducer/BurgerReducer';
+import authReducer from './RegisterReducer/RegistrationReducer';
+import ordersReducer from './OrderReducer/OrderReducer';
 
 import {
   TypedUseSelectorHook,

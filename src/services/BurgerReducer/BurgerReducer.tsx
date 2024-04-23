@@ -6,8 +6,8 @@ import {
   createAction,
   createSelector
 } from '@reduxjs/toolkit';
-import { getIngredientsApi } from '../../../utils/burger-api';
-import { TConstructorIngredient, TIngredient } from '../../../utils/types';
+import { getIngredientsApi } from '../../utils/burger-api';
+import { TConstructorIngredient, TIngredient } from '../../utils/types';
 import { error } from 'console';
 import { randomUUID } from 'crypto';
 import { IngredientDetails } from 'src/components/ingredient-details';
@@ -55,8 +55,7 @@ const burgerSlice = createSlice({
           state.constructorItems.bun = { ...payload };
         } else {
           state.constructorItems.ingredients.push({
-            ...payload,
-            id: randomId()
+            ...payload
           });
         }
       },
@@ -73,6 +72,10 @@ const burgerSlice = createSlice({
         state.constructorItems.ingredients.filter(
           (item: { id: string }) => item.id !== payload.id
         );
+    },
+    clearConstructor: (state) => {
+      state.constructorItems.ingredients = [];
+      state.constructorItems.bun = {};
     },
     moveIngredientUp: (state, action: PayloadAction<number>) => {
       const { ingredients } = state.constructorItems;
@@ -123,7 +126,8 @@ export const {
   addIngredient,
   removeIngredient,
   moveIngredientDown,
-  moveIngredientUp
+  moveIngredientUp,
+  clearConstructor
 } = burgerSlice.actions;
 export const { getConstructorItems, getIngredients, getIngredient } =
   burgerSlice.selectors;

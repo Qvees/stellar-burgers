@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from '../../services/store';
-import { fetchBurgerData } from '../Reducers/BurgerReducer/BurgerReducer'; // Подставьте путь к вашему файлу с экшенами
+import { fetchBurgerData } from '../../services/BurgerReducer/BurgerReducer'; // Подставьте путь к вашему файлу с экшенами
 
 import {
   ConstructorPage,
@@ -15,34 +15,33 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
-import { OnlyAuth, OnlyUnAuth } from '../ProtectedRoute/ProtectedRoute';
+import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
 import {
   fetchAllOrders,
   getUserOrder
-} from '../Reducers/OrderReducer/OrderReducer';
-import { checkUserAuth, fetchWithToken } from '../auth/actions';
+} from '../../services/OrderReducer/OrderReducer';
+import { checkUserAuth, fetchWithToken } from '../../services/auth/actions';
 
 const App = () => {
+  const location = useLocation();
+  const background = location.state && location.state.background;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchBurgerData());
-  }, []);
-
-  useEffect(() => {
-    dispatch(fetchAllOrders());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(checkUserAuth());
-  }, []);
+  }, [dispatch]);
 
   const handleModalClose = () => {
     navigate(-1);
   };
+
   // useEffect(() => {
   //   const refreshToken = localStorage.getItem('token');
   //   if (refreshToken) {
@@ -55,10 +54,10 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+      <Routes location={background || location}>
         <Route path='*' element={<NotFound404 />} />
         <Route path='/' element={<ConstructorPage />} />
-        <Route path='/feed' element={<Feed />} />
+        <Route path='/feed' element={<Feed />} />x
         <Route path='/login' element={<OnlyUnAuth component={<Login />} />} />
         <Route
           path='/register'
@@ -77,35 +76,39 @@ const App = () => {
           path='/profile/orders'
           element={<OnlyAuth component={<ProfileOrders />} />}
         />
-        <Route
-          path='/feed/:number'
-          element={
-            <Modal title='заказ' onClose={handleModalClose}>
-              <OrderInfo />
-            </Modal>
-          }
-        />
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal title='Ингредиенты' onClose={handleModalClose}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-        <Route
-          path='/profile/orders/:number'
-          element={
-            <OnlyAuth
-              component={
-                <Modal title='номер заказа' onClose={handleModalClose}>
-                  <OrderInfo />
-                </Modal>
-              }
-            />
-          }
-        />
       </Routes>
+      {background && (
+        <Routes>
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal title='заказ' onClose={handleModalClose}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title='Детали ингредиента' onClose={handleModalClose}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <OnlyAuth
+                component={
+                  <Modal title='номер заказа' onClose={handleModalClose}>
+                    <OrderInfo />
+                  </Modal>
+                }
+              />
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };

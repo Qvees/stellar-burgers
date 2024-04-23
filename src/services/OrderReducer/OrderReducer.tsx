@@ -11,7 +11,7 @@ import {
   logoutApi,
   orderBurgerApi,
   registerUserApi
-} from '../../../utils/burger-api';
+} from '../../utils/burger-api';
 import { RootState } from 'src/services/store';
 import { TOrder, TOrdersData } from '@utils-types';
 import { access } from 'fs';
@@ -84,6 +84,7 @@ const ordersSlice = createSlice({
       state.ordersData = action.payload;
     },
     closeModal: (state) => {
+      state.orderData = null;
       state.userNewOrder = null;
     }
   },

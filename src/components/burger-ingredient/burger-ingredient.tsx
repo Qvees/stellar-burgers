@@ -8,8 +8,7 @@ import {
   addBun,
   ConstructorState,
   getConstructorItems
-} from '../Reducers/BurgerReducer/BurgerReducer';
-import { TIngredient } from '../../utils/types';
+} from '../../services/BurgerReducer/BurgerReducer';
 
 export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
   ({ ingredient, count }) => {

@@ -6,12 +6,12 @@ import {
   getUserData,
   newUserData,
   updateUserData
-} from '../../components/Reducers/RegisterReducer/RegistrationReducer';
+} from '../../services/RegisterReducer/RegistrationReducer';
 import { useDispatch } from '../../services/store';
 import {
   getOrderByNumber,
   getUserOrder
-} from '../../components/Reducers/OrderReducer/OrderReducer';
+} from '../../services/OrderReducer/OrderReducer';
 import { TRegisterData } from '@api';
 
 export const Profile: FC = () => {
@@ -21,10 +21,6 @@ export const Profile: FC = () => {
     (state: RootState) => state.auth.registrationData
   );
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getUserOrder());
-  }, []);
 
   const [formValue, setFormValue] = useState({
     name: user?.name || '',
