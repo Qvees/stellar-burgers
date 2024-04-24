@@ -1,25 +1,41 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../services/store';
+import {
+  getUserData,
+  newUserData,
+  updateUserData
+} from '../../services/RegisterReducer/RegistrationReducer';
+import { useDispatch } from '../../services/store';
+import {
+  getOrderByNumber,
+  getUserOrder
+} from '../../services/OrderReducer/OrderReducer';
+import { TRegisterData } from '@api';
 
 export const Profile: FC = () => {
   /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
+  const user = useSelector((state: RootState) => state.auth.user);
+  const updateUser = useSelector(
+    (state: RootState) => state.auth.registrationData
+  );
+  const dispatch = useDispatch();
 
   const [formValue, setFormValue] = useState({
-    name: user.name,
-    email: user.email,
+    name: user?.name || '',
+    email: user?.email || '',
     password: ''
   });
 
   useEffect(() => {
-    setFormValue((prevState) => ({
-      ...prevState,
-      name: user?.name || '',
-      email: user?.email || ''
-    }));
+    if (user) {
+      setFormValue({
+        name: user.name || '',
+        email: user.email || '',
+        password: ''
+      });
+    }
   }, [user]);
 
   const isFormChanged =
@@ -29,13 +45,17 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(newUserData(formValue));
+    if (updateUser) {
+      dispatch(updateUserData(updateUser));
+    }
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
-      name: user.name,
-      email: user.email,
+      name: user?.name || '',
+      email: user?.email || '',
       password: ''
     });
   };
