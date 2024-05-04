@@ -20,7 +20,7 @@ export interface ConstructorState {
   constructorItems: any;
 }
 
-const initialState: ConstructorState = {
+export const initialState: ConstructorState = {
   isLoading: false,
   ingredients: [],
   constructorItems: {

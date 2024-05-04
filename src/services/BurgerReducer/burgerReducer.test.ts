@@ -3,27 +3,14 @@ import burgerReducer, {
   addIngredient,
   removeIngredient,
   moveIngredientUp,
-  moveIngredientDown
+  moveIngredientDown,
+  initialState
 } from './BurgerReducer';
 
 // id который дается рандомно при добавление заказа в конструктор
 let id: string | null = null;
 
 describe('burgerReducer', () => {
-  let initialState: any;
-
-  beforeEach(() => {
-    initialState = {
-      isLoading: false,
-      ingredients: [],
-      constructorItems: {
-        bun: {
-          price: 0
-        },
-        ingredients: []
-      }
-    };
-  });
 
   it('проверяем добвление ингредиента в конструктор', () => {
     const ingredient = {
