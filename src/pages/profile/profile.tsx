@@ -1,6 +1,6 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/store';
 import { RootState } from '../../services/store';
 import {
   getUserData,
@@ -16,7 +16,7 @@ import { TRegisterData } from '@api';
 
 export const Profile: FC = () => {
   /** TODO: взять переменную из стора */
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   const updateUser = useSelector(
     (state: RootState) => state.auth.registrationData
   );

@@ -23,10 +23,10 @@ export const checkUserAuth = createAsyncThunk(
   }
 );
 
-export const fetchWithToken = createAsyncThunk(
-  'fetchWithToken',
-  async ({ url, options }: { url: RequestInfo; options: RequestInit }) => {
-    const res = await fetchWithRefresh(url, options); // Используем функцию fetchWithRefresh для выполнения запроса
-    return res; // Возвращаем результат
-  }
-);
+// export const fetchWithToken = createAsyncThunk(
+//   'fetchWithToken',
+//   async ({ url, options }: { url: RequestInfo; options: RequestInit }) => {
+//     const res = await fetchWithRefresh(url, options); // Используем функцию fetchWithRefresh для выполнения запроса
+//     return res; // Возвращаем результат
+//   }
+// );

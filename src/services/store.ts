@@ -10,7 +10,7 @@ import {
 } from 'react-redux';
 
 // Объявляем корневой редюсер
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   burger: burgerReducer,
   auth: authReducer,
   orders: ordersReducer

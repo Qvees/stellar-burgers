@@ -12,6 +12,7 @@ import { error } from 'console';
 import { randomUUID } from 'crypto';
 import { IngredientDetails } from 'src/components/ingredient-details';
 import { RootState } from 'src/services/store';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface ConstructorState {
   isLoading: boolean;
@@ -38,7 +39,7 @@ export const fetchBurgerData = createAsyncThunk(
   }
 );
 
-const randomId = () => self.crypto.randomUUID();
+const randomId = () => uuidv4();
 
 const burgerSlice = createSlice({
   name: 'burger',
@@ -63,6 +64,10 @@ const burgerSlice = createSlice({
         payload: { ...ingredient, id: randomId() }
       })
     },
+    fetchIngredients: (state, action: PayloadAction<TIngredient[]>) => {
+      state.ingredients = { ...action.payload };
+    },
+
     // Удаление ингредиента
     removeIngredient: (
       state,
@@ -127,7 +132,8 @@ export const {
   removeIngredient,
   moveIngredientDown,
   moveIngredientUp,
-  clearConstructor
+  clearConstructor,
+  fetchIngredients
 } = burgerSlice.actions;
 export const { getConstructorItems, getIngredients, getIngredient } =
   burgerSlice.selectors;

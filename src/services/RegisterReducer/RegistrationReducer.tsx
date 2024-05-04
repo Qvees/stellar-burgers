@@ -23,7 +23,7 @@ export interface UserData {
   isLoginUser: boolean;
 }
 
-const initialState: UserData = {
+export const initialState: UserData = {
   isAuthChecked: false,
   isLoginUser: false,
   registrationData: null,
