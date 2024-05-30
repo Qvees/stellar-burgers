@@ -36,7 +36,7 @@ export interface allOrdersData {
   orders: TOrdersData | null;
 }
 
-const initialState: allOrdersData = {
+export const initialState: allOrdersData = {
   orderByNumber: null,
   orderData: null,
   ordersData: null,

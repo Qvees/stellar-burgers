@@ -4,6 +4,7 @@ import App from './components/app/app';
 import { Provider } from 'react-redux';
 import store from './services/store';
 import { BrowserRouter, Route, RouterProvider } from 'react-router-dom';
+import Cypress from 'cypress';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = ReactDOMClient.createRoot(container!);
@@ -17,3 +18,7 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
+
+if (window.Cypress) {
+  (window as any).store = store;
+}
